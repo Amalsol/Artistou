@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitor Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-white">
+  <!-- Navbar -->
+  <nav id="navbar" class="bg-blue-500 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <img src="logo.jpg" alt="Logo" class="w-12 h-12 rounded-full mr-3"> <!-- Logo Image -->
+
+      <h1 class="text-2xl font-bold text-red-700">Visitor Dashboard</h1>
+      <button id="profileMenuButton" class="text-2xl">☰</button>
+      <div class="space-x-4">
+        <button id="artLink" class="bg-white text-blue-500 px-4 py-2 rounded">Art</button>
+        <button id="eventLink" class="bg-white text-blue-500 px-4 py-2 rounded">Events</button>
+        <button id="jobLink" class="bg-white text-blue-500 px-4 py-2 rounded">Jobs</button>
+        <button id="donationLink" class="bg-white text-blue-500 px-4 py-2 rounded">Donation</button>
+        <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Profile Menu -->
+  <div id="profileMenu" class="hidden bg-white shadow-md rounded p-4 w-64 mt-4 mx-auto">
+    <img src="kali.png" alt="Profile Picture" class="w-20 h-20 rounded-full mx-auto mb-2">
+    <h4 class="text-lg font-bold text-center">Kali</h4>
+    <p class="text-gray-600 text-center">Visitor</p>
+    <h3 class="text-lg font-bold mt-4">Your Purchases</h3>
+    <ul id="purchasesList" class="list-disc pl-5 mt-2"></ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <!-- Art Section -->
+    <div id="artSection" class="hidden p-4">
+      <h2 class="text-2xl font-bold text-center mb-4">Art Gallery</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Artwork 1 -->
+        <div class="art-card bg-white shadow-md rounded p-4" data-art-title="Abstract Painting" data-art-price="$50">
+          <img src="abs.jpg" alt="Art 1" class="w-full h-48 object-cover rounded mb-2">
+          <h4 class="art-title text-lg font-bold">Abstract Painting</h4>
+          <p class="text-gray-600">An expressive abstract art piece.</p>
+          <p class="art-price text-green-600 font-bold">$50</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="purchase-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Purchase</button>
+            <i class="heart-icon far fa-heart text-gray-500 text-2xl cursor-pointer"></i>
+          </div>
+        </div>
+        <!-- Artwork 2 -->
+        <div class="art-card bg-white shadow-md rounded p-4" data-art-title="Sunset Landscape" data-art-price="$75">
+          <img src="sun.jpg" alt="Art 2" class="w-full h-48 object-cover rounded mb-2">
+          <h4 class="art-title text-lg font-bold">Sunset Landscape</h4>
+          <p class="text-gray-600">A beautiful sunset over the mountains.</p>
+          <p class="art-price text-green-600 font-bold">$75</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="purchase-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Purchase</button>
+            <i class="heart-icon far fa-heart text-gray-500 text-2xl cursor-pointer"></i>
+          </div>
+        </div>
+ <!-- Artwork 3 -->
+        <div class="art-card bg-white shadow-md rounded p-4" data-art-title="Ocean Waves" data-art-price="$60">
+          <img src="wave.jpg" alt="Art 3" class="w-full h-48 object-cover rounded mb-2">
+          <h4 class="art-title text-lg font-bold">Ocean Waves</h4>
+          <p class="text-gray-600">A serene depiction of ocean waves.</p>
+          <p class="art-price text-green-600 font-bold">$60</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="purchase-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Purchase</button>
+            <i class="heart-icon far fa-heart text-gray-500 text-2xl cursor-pointer"></i>
+          </div>
+        </div>
+        <!-- Artwork 4 -->
+        <div class="art-card bg-white shadow-md rounded p-4" data-art-title="City Skyline" data-art-price="$80">
+          <img src="sky.jpg" alt="Art 4" class="w-full h-48 object-cover rounded mb-2">
+          <h4 class="art-title text-lg font-bold">City Skyline</h4>
+          <p class="text-gray-600">A vibrant city skyline at night.</p>
+          <p class="art-price text-green-600 font-bold">$80</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="purchase-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Purchase</button>
+            <i class="heart-icon far fa-heart text-gray-500 text-2xl cursor-pointer"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jobs Section -->
+    <div id="jobSection" class="hidden p-6">
+      <h2 class="text-3xl font-bold text-center mb-6">Jobs</h2>
+      <div class="flex justify-center mb-6">
+        <button id="addJobTab" class="px-4 py-2 bg-blue-500 text-white rounded-l hover:bg-blue-600">Add Job</button>
+        <button id="searchJobTab" class="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600">Search Jobs</button>
+      </div>
+
+      <!-- Add Job Form -->
+      <div id="addJobSection" class="hidden">
+        <h3 class="text-xl font-bold mb-4">Post a Job Opportunity</h3>
+        <form id="jobForm" class="bg-gray-100 p-4 rounded shadow-md">
+          <div class="mb-4">
+            <label for="jobTitle" class="block font-bold mb-2">Job Title</label>
+            <input type="text" id="jobTitle" class="w-full p-2 border rounded" placeholder="e.g., Freelance Painter">
+          </div>
+          <div class="mb-4">
+            <label for="jobDescription" class="block font-bold mb-2">Description</label>
+            <textarea id="jobDescription" class="w-full p-2 border rounded" placeholder="Describe the job..."></textarea>
+          </div>
+          <div class="mb-4">
+            <label for="jobContact" class="block font-bold mb-2">Contact Information</label>
+            <input type="email" id="jobContact" class="w-full p-2 border rounded" placeholder="e.g., contact@example.com">
+          </div>
+          <button type="button" id="postJobButton" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Post Job</button>
+        </form>
+      </div>
+
+      <!-- Search Jobs Section -->
+      <div id="searchJobSection" class="hidden">
+        <h3 class="text-xl font-bold mb-4">Available Job Opportunities</h3>
+        <div id="jobGallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Existing Jobs -->
+          <div class="job-card bg-white shadow-md rounded p-4">
+            <h4 class="job-title text-lg font-bold">Photographer at Street Club</h4>
+            <p class="text-gray-600">For a week - Salary: £200</p>
+          </div>
+          <div class="job-card bg-white shadow-md rounded p-4">
+            <h4 class="job-title text-lg font-bold">Musician needed in theBOMB band</h4>
+            <p class="text-gray-600">For a concert - Salary: £50</p>
+          </div>
+          <div class="job-card bg-white shadow-md rounded p-4">
+            <h4 class="job-title text-lg font-bold">Pianist needed in a restaurant</h4>
+            <p class="text-gray-600">For a night in Freedom Street - Salary: £80</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Section -->
+    <div id="eventsSection" class="hidden p-4">
+      <h2 class="text-2xl font-bold text-center mb-4">Upcoming Events</h2>
+      <div id="eventGallery" class="grid grid-cols-2 gap-4">
+        <div class="event-card bg-white shadow-md rounded p-4" data-event-title="Live Concert" data-event-price="$30">
+          <h4 class="event-title text-lg font-bold">Live Concert</h4>
+          <p class="text-gray-600">Experience live music.</p>
+          <p class="event-date text-blue-600 font-bold">Dec 15, 2024</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="ticket-button bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Buy Ticket</button>
+          </div>
+        </div>
+
+        <div class="event-card bg-white shadow-md rounded p-4" data-event-title="Jazz Concert" data-event-price="$30">
+          <h4 class="event-title text-lg font-bold">Jazz Concert</h4>
+          <p class="text-gray-600">Experience live Jazz music.</p>
+          <p class="event-date text-blue-600 font-bold">Feb 15, 2025</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="ticket-button bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Buy Ticket</button>
+          </div>
+        </div>
+
+        <div class="event-card bg-white shadow-md rounded p-4" data-event-title="Music Workshop" data-event-price="$30">
+          <h4 class="event-title text-lg font-bold">Music Workshop</h4>
+          <p class="text-gray-600">Learn your first Notes.</p>
+          <p class="event-date text-blue-600 font-bold">Nov 15, 2025</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="register-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Register</button>
+          </div>
+        </div>
+
+        <div class="event-card bg-white shadow-md rounded p-4" data-event-title="Photograph Workshop" data-event-price="$30">
+          <h4 class="event-title text-lg font-bold">Photograph Workshop</h4>
+          <p class="text-gray-600">How to be a Photographer.</p>
+          <p class="event-date text-blue-600 font-bold">Jan 01, 2025</p>
+          <div class="flex justify-between items-center mt-2">
+            <button class="register-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donation Section -->
+    <div id="donationSection" class="hidden p-4">
+      <h2 class="text-2xl font-bold text-center mb-4">Donate to Music</h2>
+      <p class="text-center text-gray-600">Support music and local artists by donating.</p>
+      <div class="flex justify-center mt-4">
+        <input id="donationAmount" type="number" class="border px-4 py-2 rounded" placeholder="Enter amount" />
+        <button id="donateNow" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 ml-2">Donate Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Profile Menu Toggle
+      const profileMenuButton = document.getElementById("profileMenuButton");
+      const profileMenu = document.getElementById("profileMenu");
+      profileMenuButton.addEventListener("click", () => {
+        profileMenu.classList.toggle("hidden");
+      });
+
+      // Navigation between sections
+      const sections = {
+        artLink: "artSection",
+        eventLink: "eventsSection",
+        jobLink: "jobSection",
+        donationLink: "donationSection",
+      };
+
+      Object.keys(sections).forEach((id) => {
+        document.getElementById(id).addEventListener("click", () => {
+          Object.values(sections).forEach((section) =>
+            document.getElementById(section)?.classList.add("hidden")
+          );
+          document.getElementById(sections[id])?.classList.remove("hidden");
+        });
+      });
+
+      // Tab switching for Add and Search Jobs
+      const addJobTab = document.getElementById("addJobTab");
+      const searchJobTab = document.getElementById("searchJobTab");
+      const addJobSection = document.getElementById("addJobSection");
+      const searchJobSection = document.getElementById("searchJobSection");
+
+      addJobTab.addEventListener("click", () => {
+        addJobSection.classList.remove("hidden");
+        searchJobSection.classList.add("hidden");
+      });
+
+      searchJobTab.addEventListener("click", () => {
+        addJobSection.classList.add("hidden");
+        searchJobSection.classList.remove("hidden");
+      });
+
+      // Post Job Button (Add job to search jobs list)
+      const postJobButton = document.getElementById("postJobButton");
+      const jobTitle = document.getElementById("jobTitle");
+      const jobDescription = document.getElementById("jobDescription");
+      const jobContact = document.getElementById("jobContact");
+      const jobGallery = document.getElementById("jobGallery");
+
+      postJobButton.addEventListener("click", () => {
+        const newJobCard = document.createElement("div");
+        newJobCard.classList.add("job-card", "bg-white", "shadow-md", "rounded", "p-4");
+        newJobCard.innerHTML = `
+          <h4 class="job-title text-lg font-bold">${jobTitle.value}</h4>
+          <p class="text-gray-600">${jobDescription.value}</p>
+          <p class="job-contact text-blue-600 font-bold">Contact: ${jobContact.value}</p>
+        `;
+        jobGallery.appendChild(newJobCard);
+
+        // Clear form
+        jobTitle.value = '';
+        jobDescription.value = '';
+        jobContact.value = '';
+      });
+
+      // Logout Button
+      const logoutBtn = document.getElementById("logoutBtn");
+      logoutBtn.addEventListener("click", () => {
+        // Redirect to the login page (or reset session)
+        window.location.href = "/index.html"; // Replace with your login page URL
+      });
+
+      // Purchase Button
+      document.querySelectorAll(".purchase-button").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const artCard = event.target.closest('.art-card');
+          const artTitle = artCard.getAttribute('data-art-title');
+          const artPrice = artCard.getAttribute('data-art-price');
+          
+          // Add purchase to profile
+          const purchasesList = document.getElementById("purchasesList");
+          const purchaseItem = document.createElement("li");
+          purchaseItem.textContent = `${artTitle} - ${artPrice}`;
+          purchasesList.appendChild(purchaseItem);
+
+          alert("Purchase successful!");
+        });
+      });
+
+      // Heart React Functionality
+      document.querySelectorAll(".heart-icon").forEach((icon) => {
+        icon.addEventListener("click", (event) => {
+          const heart = event.target;
+          heart.classList.toggle("fas");
+          heart.classList.toggle("far");
+        });
+      });
+
+      // Register Button
+      document.querySelectorAll(".register-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          alert("You are successfully registered!");
+        });
+      });
+
+      // Ticket Button (if applicable)
+      document.querySelectorAll(".ticket-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          alert("Ticket purchased successfully!");
+        });
+      });
+
+      // Donation
+      const donateNowButton = document.getElementById("donateNow");
+      if (donateNowButton) {
+        donateNowButton.addEventListener("click", () => {
+          const amount = document.getElementById("donationAmount").value;
+          if (amount > 0) {
+            alert(`Thank you for your donation of $${amount}!`);
+            document.getElementById("donationAmount").value = ""; // Clear input
+          } else {
+            alert("Please enter a valid amount.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

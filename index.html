@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artistou</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Main Container -->
+    <div class="bg-white p-8 rounded-lg shadow-lg w-[500px] max-w-full">
+        <img src="logo.jpg" alt="Logo" class="w-12 h-12 rounded-full mr-3"> <!-- Logo Image -->
+        <h1 class="text-3xl font-bold mb-6 text-center text-red-700 ">Artistou</h1>
+
+        <!-- Tabs -->
+        <div class="flex justify-center gap-4 mb-6">
+            <button id="loginTab" class="py-2 px-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">Log In</button>
+            <button id="signupTab" class="py-2 px-6 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="flex flex-col gap-4" action="/login" method="post">
+            <div>
+                <label class="block text-gray-700 mb-2">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="loginUsername" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 mb-2">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="loginPassword" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+            
+            <button 
+                type="submit" 
+                class="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+                Log In
+            </button>
+        </form>
+
+        <!-- Signup Form -->
+        <form 
+            id="signupForm" 
+            class="flex flex-col gap-4 hidden" 
+            action="/signup" 
+            method="post" 
+            enctype="multipart/form-data"
+        >
+            <div>
+                <label class="block text-gray-700 mb-2">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="signupUsername" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block text-gray-700 mb-2">Role</label>
+                <select 
+                    name="role" 
+                    id="signupRole" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="">Select Role</option>
+                    <option value="Artist">Artist</option>
+                    <option value="Visitor">Visitor</option>
+                </select>
+            </div>
+
+            <!-- Job Field (Initially Hidden) -->
+            <div id="jobFieldContainer" class="hidden">
+                <label class="block text-gray-700 mb-2">Job (Type of Art)</label>
+                <select 
+                    name="job" 
+                    id="signupJob" 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <option value="">Select Art Type</option>
+                    <option value="Painter">Painter</option>
+                    <option value="Musician">Musician</option>
+                    <option value="Photographer">Photographer</option>
+                    <option value="Sculptor">Sculptor</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 mb-2">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="signupPassword" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring- 2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block text-gray-700 mb-2">Confirm Password</label>
+                <input 
+                    type="password" 
+                    name="confirmPassword" 
+                    id="signupConfirmPassword" 
+                    required 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block text-gray-700 mb-2">Profile Picture</label>
+                <input 
+                    type="file" 
+                    name="profilePic" 
+                    id="signupProfilePic" 
+                    accept="image/*" 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <button 
+                type="submit" 
+                class="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+                Sign Up
+            </button>
+        </form>
+    </div>
+    <script>
+      // DOM Element Selections
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const roleSelect = document.getElementById('signupRole');
+      const jobFieldContainer = document.getElementById('jobFieldContainer');
+      
+      // Form Toggle Logic
+      signupTab.addEventListener('click', (e) => {
+          e.preventDefault();
+          loginForm.classList.add('hidden');
+          signupForm.classList.remove('hidden');
+          loginTab.classList.remove('bg-blue-500', 'text-white');
+          loginTab.classList.add('bg-gray-300', 'text-gray-700');
+          signupTab.classList.remove('bg-gray-300', 'text-gray-700');
+          signupTab.classList.add('bg-blue-500', 'text-white');
+      });
+      
+      loginTab.addEventListener('click', (e) => {
+          e.preventDefault();
+          signupForm.classList.add('hidden');
+          loginForm.classList.remove('hidden');
+          signupTab.classList.remove('bg-blue-500', 'text-white');
+          signupTab.classList.add('bg-gray-300', 'text-gray-700');
+          loginTab.classList.remove('bg-gray-300', 'text-gray-700');
+          loginTab.classList.add('bg-blue-500', 'text-white');
+      });
+      
+      // Show/Hide Job Field based on Role
+      roleSelect.addEventListener('change', () => {
+          jobFieldContainer.style.display = 
+              roleSelect.value === 'Artist' ? 'block' : 'none';
+      });
+      
+      // Login Form Submission
+      loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const username = document.getElementById('loginUsername').value.trim();
+          const password = document.getElementById('loginPassword').value.trim();
+      
+          // Basic Validation
+          if (!username || !password) {
+              alert('Please enter both username and password');
+              return;
+          }
+      
+          try {
+              const response = await fetch('/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ username, password })
+              });
+      
+              const data = await response.json();
+      
+              if (data.success) {
+                  // Detailed Logging
+                  console.log('Login Successful', data);
+                  
+                  // Redirect to appropriate dashboard
+                  window.location.href = data.redirectUrl;
+              } else {
+                  // Show error message
+                  console.error('Login Failed:', data.message);
+                  alert(data.message || 'Login failed. Please try again.');
+              }
+          } catch (error) {
+              console.error('Login error:', error);
+              alert('An unexpected error occurred. Please try again.');
+          }
+      });
+      
+      // Signup Form Submission
+      signupForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const username = document.getElementById('signupUsername').value.trim();
+          const password = document.getElementById('signupPassword').value.trim();
+          const confirmPassword = document.getElementById('signupConfirmPassword').value.trim();
+          const role = document.getElementById('signupRole').value;
+          const job = role === 'Artist' ? 
+              document.getElementById('signupJob').value.trim() : null;
+          const profilePic = document.getElementById('signupProfilePic').files[0];
+
+          // Comprehensive Validation
+          if (! username) {
+              alert('Username is required');
+              return;
+          }
+      
+          if (password.length < 6) {
+              alert('Password must be at least 6 characters long');
+              return;
+          }
+      
+          if (password !== confirmPassword) {
+              alert('Passwords do not match');
+              return;
+          }
+      
+          if (!role) {
+              alert('Please select a role');
+              return;
+          }
+      
+          if (role === 'Artist' && !job) {
+              alert('Please enter your art job/type');
+              return;
+          }
+      
+          const formData = new FormData();
+          formData.append('username', username);
+          formData.append('password', password);
+          formData.append('role', role);
+          if (job) {
+              formData.append('job', job);
+          }
+          if (profilePic) {
+              formData.append('profilePic', profilePic);
+          }
+      
+          try {
+              const response = await fetch('/signup', {
+                  method: 'POST',
+                  body: formData
+              });
+      
+              const data = await response.json();
+      
+              if (data.success) {
+                  // Detailed Logging
+                  console.log('Signup Successful', data);
+                  
+                  // Switch to login form
+                  alert('Signup successful! Please log in.');
+                  signupForm.classList.add('hidden');
+                  loginForm.classList.remove('hidden');
+              } else {
+                  // Show error message
+                  console.error('Signup Failed:', data.message);
+                  alert(data.message || 'Signup failed. Please try again.');
+              }
+          } catch (error) {
+              console.error('Signup error:', error);
+              alert('An unexpected error occurred. Please try again.');
+          }
+      });
+    </script>
+</body>
+</html>

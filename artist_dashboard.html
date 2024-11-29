@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-500 text-white p-4 flex justify-between items-center">
+    <img src="logo.jpg" alt="Logo" class="w-12 h-12 rounded-full mr-3"> <!-- Logo Image -->
+
+    <h1 class="text-xl font-bold  text-red-700">Artist Dashboard</h1>
+    <!-- Hamburger Icon -->
+    <button id="hamburger" class="flex flex-col gap-1">
+      <span class="block w-6 h-1 bg-white"></span>
+      <span class="block w-6 h-1 bg-white"></span>
+      <span class="block w-6 h-1 bg-white"></span>
+    </button>
+    <!-- Navbar Links -->
+    <ul class="hidden lg:flex gap-6">
+      <li><a href="#" id="galleryLink" class="bg-white text-blue-500 px-4 py-2 rounded-lg hover:bg-green-600 hover:text-white">Gallery</a></li>
+      <li><a href="#" id="salesLink" class="bg-white text-blue-500 px-4 py-2 rounded-lg hover:text-white hover:bg-green-600">Sales Data</a></li>
+      <li><button id="logoutBtn" class="bg-red-500 text-blue-500 px-4 py-2 rounded-lg  hover:text-white hover:bg-green-600">Logout</button></li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar Profile Card (Hidden by default) -->
+  <div id="profileCard" class="hidden bg-white shadow-lg rounded-lg absolute top-14 right-4 w-64 p-4">
+    <img id="profilePic" src="default-profile.png" alt="Profile Picture" class="w-20 h-20 mx-auto rounded-full mb-2">
+    <h3 id="profileUsername" class="text-center text-lg font-bold">Amal</h3>
+    <p id="profileJob" class="text-center text-gray-500">Photographer</p>
+  </div>
+
+  <!-- Main Content -->
+  <main class="p-6">
+    <!-- Gallery Section (Hidden by default) -->
+    <section id="gallery" class="mb-8 hidden">
+      <h2 class="text-2xl font-bold mb-4 text-center">Gallery</h2>
+      <div id="artworkContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Example Artworks (dynamically added later) -->
+      </div>
+      <div class="flex justify-center gap-4 mt-4">
+        <button id="addArtworkBtn" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Add New Artwork</button>
+        <button id="showAllBtn" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600">Show All Artworks</button>
+      </div>
+    </section>
+
+    <!-- Sales Data Section -->
+    <section id="sales" class="hidden">
+      <h2 class="text-2xl font-bold mb-4 text-center">Sales Data</h2>
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <p class="text-lg">Number of Projects Sold: <span id="salesCount" class="font-bold">0</span></p>
+        <p class="text-lg">Total Earnings: <span id="totalEarnings" class="font-bold">$0.00</span></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for Adding New Artwork -->
+  <div id="addArtworkModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg w-1/3">
+      <h2 class="text-xl font-bold mb-4">Add New Artwork</h2>
+      <div>
+        <label class="block mb-2" for="artworkType">Type of Artwork:</label>
+        <select id="artworkType" class="w-full p-2 border border-gray-300 rounded mb-4">
+          <option value="picture">Picture</option>
+          <option value="music">Music</option>
+          <option value="video">Video</option>
+        </ select>
+
+        <label class="block mb-2" for="artworkName">Artwork Name:</label>
+        <input id="artworkName" type="text" class="w-full p-2 border border-gray-300 rounded mb-4" placeholder="Enter Artwork Name">
+
+        <label class="block mb-2" for="artworkPrice">Price:</label>
+        <input id="artworkPrice" type="number" class="w-full p-2 border border-gray-300 rounded mb-4" placeholder="Enter Price">
+
+        <label class="block mb-2" for="artworkWorker">Artist's Name:</label>
+        <input id="artworkWorker" type="text" class="w-full p-2 border border-gray-300 rounded mb-4" placeholder="Enter Artist's Name">
+
+        <div id="fileInputContainer">
+          <label class="block mb-2" for="artworkImage">Artwork Image:</label>
+          <input id="artworkImage" type="file" class="w-full p-2 border border-gray-300 rounded mb-4" accept="image/*">
+        </div>
+
+        <div id="mp3InputContainer" class="hidden">
+          <label class="block mb-2" for="artworkMp3">MP3 File:</label>
+          <input id="artworkMp3" type="file" class="w-full p-2 border border-gray-300 rounded mb-4" accept="audio/mpeg">
+        </div>
+
+        <div class="flex justify-end gap-4">
+          <button id="closeModalBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
+          <button id="saveArtworkBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Save Artwork</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript to toggle the profile card visibility
+    document.getElementById("hamburger").addEventListener("click", () => {
+      const profileCard = document.getElementById("profileCard");
+      profileCard.classList.toggle("hidden");
+    });
+
+    // Navigation between sections
+    const galleryLink = document.getElementById("galleryLink");
+    const salesLink = document.getElementById("salesLink");
+
+    const gallerySection = document.getElementById("gallery");
+    const salesSection = document.getElementById("sales");
+
+    function showSection(sectionToShow) {
+      gallerySection.classList.add("hidden");
+      salesSection.classList.add("hidden");
+      sectionToShow.classList.remove("hidden");
+    }
+
+    galleryLink.addEventListener("click", () => showSection(gallerySection));
+    salesLink.addEventListener("click", () => showSection(salesSection));
+
+    showSection(gallerySection);
+
+    const profileData = {
+      username: "Amal",
+      job: "Photographer",
+      profilePic: "me.png" , // Use me.png from the same folder
+    };
+
+    document.getElementById("profileUsername").innerText = profileData.username;
+    document.getElementById("profileJob").innerText = profileData.job;
+    document.getElementById("profilePic").src = profileData.profilePic;
+
+    const artworkContainer = document.getElementById("artworkContainer");
+    let artworks = [];
+
+    function addArtworkCard(name, price, worker, imageUrl, mp3Url, type) {
+      const artworkCard = document.createElement("div");
+      artworkCard.classList.add("bg-white", "p-4", "rounded-lg", "shadow");
+
+      artworkCard.innerHTML = `
+        <img src="${imageUrl}" alt="Artwork" class="w-full h-32 object-cover mb-4 rounded-md">
+        <h3 class="text-lg font-semibold">${name}</h3>
+        <p class="text-sm text-gray-500">By: ${worker}</p>
+        <p class="font-bold text-blue-600">$${price}</p>
+        <p class="text-sm text-gray-400">Type: ${type.charAt(0).toUpperCase() + type.slice(1)}</p>
+        ${mp3Url ? `<p class="text-sm text-gray-400">MP3: ${mp3Url}</p>` : ''}
+        <button class="mt-2 text-blue-500 hover:text-blue-700" onclick="viewArtwork('${imageUrl}', '${name}', '${worker}', '${price}', '${mp3Url}')">View Artwork</button>
+        <button class="mt-2 text-red-500 hover:text-red-700" onclick="deleteArtwork(this)">Delete</button>
+      `;
+      artworkContainer.appendChild(artworkCard);
+    }
+
+    function deleteArtwork(button) {
+      button.parentElement.remove();
+    }
+
+    function viewArtwork(imageUrl, name, worker, price, mp3Url) {
+      alert(`Viewing Artwork: \nName: ${name}\nArtist: ${worker}\nPrice: $${price}\nImage URL: ${imageUrl}\nMP3 URL: ${mp3Url}`);
+    }
+
+    document.getElementById("addArtworkBtn").addEventListener("click", () => {
+      document.getElementById("addArtworkModal").classList.remove("hidden");
+    });
+
+    document.getElementById("closeModalBtn").addEventListener("click", () => {
+      document.getElementById("addArtworkModal").classList.add("hidden");
+    });
+
+    document.getElementById("saveArtworkBtn").addEventListener("click", () => {
+      const name = document.getElementById("artworkName").value;
+      const price = document.getElementById("artworkPrice").value;
+      const worker = document.getElementById("artworkWorker").value;
+      const imageFile = document.getElementById("artworkImage").files[0];
+      const mp3File = document.getElementById("artworkMp3").files[0];
+      const type = document.getElementById("artworkType").value;
+
+      if (name && price && worker) {
+        const artworkData = { name, price, worker, type };
+
+        if (type === "picture" && imageFile) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            artworkData.imageUrl = event.target.result;
+            artworks.push(artworkData);
+            document.getElementById("addArtworkModal").classList.add("hidden");
+          };
+          reader.readAsDataURL(imageFile);
+        } else if (type === "music" && imageFile && mp3File) {
+          const readerImage = new FileReader();
+          readerImage.onload = function(event) {
+            artworkData.imageUrl = event.target.result;
+            const readerMp3 = new FileReader();
+            readerMp3.onload = function(event) {
+              artworkData.mp3Url = event.target.result;
+              artworks.push(artworkData);
+              document.getElementById("addArtworkModal").classList.add("hidden");
+            };
+            readerMp3.readAsDataURL(mp3File);
+          };
+          readerImage.readAsDataURL(imageFile);
+        } else {
+          artworkData.imageUrl = ""; // No image for video
+          artworkData.mp3Url = ""; // No mp3 for video
+          artworks.push(artworkData);
+          document.getElementById("addArtworkModal").classList.add("hidden");
+        }
+      }
+    });
+
+    document.getElementById("showAllBtn").addEventListener("click", () => {
+      artworkContainer.innerHTML = ''; // Clear existing artworks
+      artworks.forEach(artwork => {
+        addArtworkCard(artwork.name, artwork.price, artwork.worker, artwork.imageUrl, artwork.mp3Url, artwork.type);
+      });
+    });
+
+    document.getElementById("artworkType").addEventListener("change", function() {
+      const selectedType = this.value;
+      const fileInputContainer = document.getElementById("fileInputContainer");
+      const mp3InputContainer = document.getElementById("mp3InputContainer");
+      if (selectedType === "music") {
+        fileInputContainer.style.display = "block"; // Show image input for album cover
+        mp3InputContainer.style.display = "block"; // Show mp3 input
+      } else if (selectedType === "video") {
+        fileInputContainer.style.display = "block"; // Show image input for video thumbnail
+        mp3InputContainer.style.display = "none"; // Hide mp3 input
+      } else {
+        fileInputContainer.style.display = "block"; // Show image input for pictures
+        mp3InputContainer.style.display = "none"; // Hide mp3 input
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      window.location.href = "index.html"; // Replace with your actual index.html path
+    });
+  </script>
+</body>
+
+</html>
